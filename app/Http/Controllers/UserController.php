@@ -7,6 +7,11 @@ use App\Models\User as Model;
 
 class UserController extends Controller
 {
+    private $viewIndex = 'user_index';
+    private $viewCreate = 'user_form';
+    private $viewEdit = 'user_form';
+    private $viewShow = 'user_show';
+    private $routePrefix = 'user';
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('tu.user_index', [
+        return view('tu.'.$this->viewIndex, [
             'models' =>  Model::latest()->paginate(50)
         ]);
     }
@@ -27,12 +32,12 @@ class UserController extends Controller
     public function create()
     {
         $data = [
-            'model' => new \App\Models\User(),
+            'model' => new Model(),
             'method' => 'POST',
-            'route' => 'user.store',
+            'route' => $this->routePrefix.'.store',
             'button' => 'SIMPAN',
         ];
-        return view('tu.user_form', $data);
+        return view('tu.'.$this->viewCreate, $data);
     }
 
     /**
@@ -76,7 +81,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = [
+            'model' => Model::findOrFail($id),
+            'method' => 'PUT',
+            'route' => [$this->routePrefix.'.update', $id],
+            'button' => 'UPDATE',
+        ];
+        return view('tu.'.$this->viewEdit, $data);
     }
 
     /**
@@ -88,7 +99,23 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $requestData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email,'.$id,
+            'nohp' => 'required|unique:users,nohp,'.$id,
+            'akses' => 'required|in:tu,admin',
+            'password' => 'nullable',
+        ]);
+        $model = Model::findOrFail($id);
+        if ($requestData['password'] == "") {
+            unset($requestData['password']);
+        } else {
+            $requestData['password'] = bcrypt($requestData['password']);
+        }
+        $model->fill($requestData);
+        $model->save();
+        flash('Data berhasil diubah');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -99,6 +126,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $model = Model::findOrFail($id);
+
+        if ($model->id == 1) {
+            flash('Data tidak bisa dihapus')->error();
+            return back();
+        }
+
+        $model->delete();
+        flash('Data berhasil dihapus');
+        return back();
     }
 }

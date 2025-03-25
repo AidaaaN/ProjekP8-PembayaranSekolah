@@ -15,16 +15,31 @@
                                     <th>No.HP</th>
                                     <th>Email</th>
                                     <th>Akses</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($models as $item)
                                     <tr>
-                                        <th>{{ $loop->iteration }}</th>
-                                        <th>{{ $item->name }}</th>
-                                        <th>{{ $item->nohp }}</th>
-                                        <th>{{ $item->email }}</th>
-                                        <th>{{ $item->akses }}</th>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->nohp }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td>{{ $item->akses }}</td>
+                                        <td>
+                                            {!! Form::open([
+                                                'route' => ['user.destroy', $item->id],
+                                                'method' => 'DELETE',
+                                                'onsubmit' => 'return confirm("Yakin ingin menghapus data ini?")',
+                                            ]) !!}
+                                            <a href="{{ route('user.edit', $item->id) }}" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-edit"></i>Edit
+                                            </a>
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash"></i>Hapus
+                                            </button>
+                                            {!! Form::close() !!}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
