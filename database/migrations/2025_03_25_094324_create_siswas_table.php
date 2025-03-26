@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('siswa_status')->nullable();
             $table->string('nama',255);
             $table->string('nisn',20)->unique();
-            $table->string('jurusan',40);
+            $table->string('jurusan',8);
             $table->string('kelas',3);
             $table->foreignId('user_id');
             $table->timestamps();

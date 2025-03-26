@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Siswa as Model;
+use App\Models\User;
 
 class SiswaController extends Controller
 {
@@ -40,6 +41,7 @@ class SiswaController extends Controller
             'route' => $this->routePrefix.'.store',
             'button' => 'SIMPAN',
             'title' => 'Form Siswa',
+            'siswa' => User::where('akses','siswa')->pluck('name','id')
         ];
         return view('tu.' . $this->viewCreate, $data);
     }
