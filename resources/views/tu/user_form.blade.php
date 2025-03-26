@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <h5 class="card-header">Form User</h5>
+                <h5 class="card-header">{{ $title }}</h5>
                 <div class="card-body">
                     {!! Form::model($model, ['route' => $route, 'method' => $method]) !!}
                     <div class="form-group">
@@ -26,17 +26,20 @@
                         {!! Form::password('password', ['class' => 'form-control']) !!}
                         <span class="text-danger">{{ $errors->first('password') }}</span>
                     </div>
-                    <div class="form-groupmt mt-3 ">
-                        <label for="akses">Hak Akses</label>
-                        {!! Form::select('akses',
-                        [
-                            'tu' => 'Tata Usaha',
-                            'admin' => 'Administrator'
-                        ],
-                        null,
-                        ['class' => 'form-control']) !!}
-                        <span class="text-danger">{{ $errors->first('akses') }}</span>
-                    </div>
+                    @if (\Route::is('user.create'))
+                        <div class="form-groupmt mt-3 ">
+                            <label for="akses">Hak Akses</label>
+                            {!! Form::select('akses',
+                            [
+                                'tu' => 'Tata Usaha',
+                                'admin' => 'Administrator',
+                                'siswa' => 'Siswa',
+                            ],
+                            null,
+                            ['class' => 'form-control']) !!}
+                            <span class="text-danger">{{ $errors->first('akses') }}</span>
+                        </div>
+                    @endif
                     {!! Form::submit($button, ['class' => 'btn btn-primary mt-3']) !!}
                     {!! Form::close() !!}
                 </div>
