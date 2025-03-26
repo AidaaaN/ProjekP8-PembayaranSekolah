@@ -1,5 +1,9 @@
 <?php
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BerandaOperatorController;
+use App\Http\Controllers\WaliController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\BerandaWaliController;
 use App\Http\Controllers\BerandaSiswaController;
 use App\Http\Controllers\BerandaTUController;
 use App\Http\Controllers\UserController;
@@ -44,3 +48,24 @@ Route::get('logout', function () {
     Auth::logout();
     return redirect('login');
 })->name('logout');
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function () {
+    // Ini route khusus untuk operator
+    Route::get('beranda', [BerandaOperatorController::class, 'index'])->name('operator.beranda');
+
+    Route::resource('user', UserController::class);
+    Route::resource('wali', WaliController::class);
+    Route::resource('siswa', SiswaController::class);
+});
+
+Route::prefix('walimurid')->middleware(['auth', 'auth.wali'])->group(function () {
+    // Ini route khusus untuk wali murid
+    Route::get('beranda', [BerandaWaliController::class, 'index'])->name('wali.beranda');
+});
+
+Route::prefix('admin')->middleware(['auth', 'auth.admin'])->group(function () {
+    // Ini route khusus untuk admin
+});
+

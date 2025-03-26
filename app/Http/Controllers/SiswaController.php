@@ -8,6 +8,14 @@ use App\Http\Requests\UpdateSiswaRequest;
 
 class SiswaController extends Controller
 {
+
+    private $viewIndex = 'siswa_index';
+    private $viewCreate = 'siswa_form';
+    private $viewEdit = 'siswa_form';
+    private $viewShow = 'siswa_show';
+    private $routePrefix = 'siswa';
+
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,12 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        //
+        return view('operator.' . $this->viewIndex, [
+            'models' => Model::latest()
+                ->paginate(50),
+            'routePrefix' => $this->routePrefix,
+            'title' => 'Data Siswa'
+        ]);
     }
 
     /**

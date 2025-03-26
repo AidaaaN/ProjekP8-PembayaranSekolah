@@ -10,7 +10,7 @@ class Siswa extends Model
     use HasFactory;
     protected $guarded = [];
 
-       /**
+    /**
      * Get the user that owns the Siswa
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -20,5 +20,14 @@ class Siswa extends Model
         return $this->belongsTo(User::class);
     }
     
+     /**
+     * Get the user that owns the Siswa
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function wali(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'wali_id');
+    }
     
 }
