@@ -11,3 +11,4 @@ class BerandaSiswaController extends Controller
         return view('siswa.beranda_index');
     }
 }
+ 

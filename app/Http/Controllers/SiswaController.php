@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User as Model;
+use App\Models\Siswa as Model;
 
 class SiswaController extends Controller
 {
-    private $viewIndex = 'user_index';
-    private $viewCreate = 'user_form';
-    private $viewEdit = 'user_form';
-    private $viewShow = 'user_show';
+    private $viewIndex = 'siswa_index';
+    private $viewCreate = 'siswa_form';
+    private $viewEdit = 'siswa_form';
+    private $viewShow = 'siswa_show';
     private $routePrefix = 'siswa';
     /**
      * Display a listing of the resource.
@@ -20,8 +20,7 @@ class SiswaController extends Controller
     public function index()
     {
         return view('tu.'.$this->viewIndex, [
-            'models' =>  Model::where('akses', 'siswa')
-            ->latest()
+            'models' =>  Model::latest()
             ->paginate(50),
             'routePrefix' => $this->routePrefix,
             'title' => 'Data Siswa',

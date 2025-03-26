@@ -1,8 +1,9 @@
 <?php
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BerandaOperatorController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\BerandaSiswaController;
 use App\Http\Controllers\BerandaTUController;
-use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
