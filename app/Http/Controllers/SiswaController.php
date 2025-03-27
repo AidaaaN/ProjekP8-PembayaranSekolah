@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Siswa as Model;
 use App\Models\User;
+use Storage;
 
 class SiswaController extends Controller
 {
@@ -18,11 +19,17 @@ class SiswaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        
+        if($request->filled('q')) {
+            $models = Model::search($request->q)->paginate(50);
+        }else{
+            $model = Model::latest()->paginate(50);
+        }
+
         return view('tu.'.$this->viewIndex, [
-            'models' =>  Model::latest()
-            ->paginate(50),
+            'models' => $models,
             'routePrefix' => $this->routePrefix,
             'title' => 'Data Siswa',
         ]);
@@ -55,14 +62,21 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $requestData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|unique:users',
-            'nohp' => 'required|unique:users',
-            'password' => 'required',
+            'siswa_id' => 'nullable',
+            'nama' => 'required',
+            'nisn' => 'required|unique:siswas',
+            'jurusan' => 'required',
+            'kelas' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
+
         ]);
-        $requestData['password'] = bcrypt($requestData['password']);
-        $requestData['email_verified_at'] = now();
-        $requestData['akses'] = 'siswa';
+
+        if ($request->hasFile('foto')) {
+            $requestData['foto'] = $request->file('foto')->store('public');
+        }
+        
+
+        $requestData['user_id'] = auth()->user()->id;
         Model::create($requestData);
         flash('Data berhasil disimpan');
         return back();
@@ -76,7 +90,11 @@ class SiswaController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = Model::findOrFail($id);
+        return view('tu.' . $this->viewShow, [
+            'model' => $model,
+            'title' => 'Detail Siswa'
+        ]);
     }
 
     /**
@@ -92,7 +110,8 @@ class SiswaController extends Controller
             'method' => 'PUT',
             'route' => [$this->routePrefix.'.update', $id],
             'button' => 'UPDATE',
-            'title' => 'Form Siswa',
+            'title' => 'Form Data Siswa',
+            
         ];
         return view('tu.'.$this->viewEdit, $data);
     }
@@ -107,17 +126,23 @@ class SiswaController extends Controller
     public function update(Request $request, $id)
     {
         $requestData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|unique:users,email,'.$id,
-            'nohp' => 'required|unique:users,nohp,'.$id,
-            'password' => 'nullable',
+            'siswa_id' => 'nullable',
+            'nama' => 'required',
+            'nisn' => 'required|unique:siswas,nisn,'. $id, 
+            'jurusan' => 'required',
+            'kelas' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
+
+            
         ]);
         $model = Model::findOrFail($id);
-        if ($requestData['password'] == "") {
-            unset($requestData['password']);
-        } else {
-            $requestData['password'] = bcrypt($requestData['password']);
+        Storage::delete($model->foto);
+        if ($request->hasFile('foto')) {
+            $requestData['foto'] = $request->file('foto')->store('public');
         }
+        
+
+        $requestData['user_id'] = auth()->user()->id;
         $model->fill($requestData);
         $model->save();
         flash('Data berhasil diubah');
@@ -132,7 +157,7 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        $model = Model::where('akses', 'siswa')->findOrFail();
+        $model = Model::firstOrFail();
         $model->delete();
         flash('Data berhasil dihapus');
         return back();
