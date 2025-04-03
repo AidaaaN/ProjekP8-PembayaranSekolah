@@ -13,6 +13,106 @@
 
 namespace App\Models{
 /**
+ * App\Models\Biaya
+ *
+ * @property int $id
+ * @property string $nama
+ * @property int $jumlah
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\BiayaFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya whereJumlah($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya whereNama($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Biaya whereUserId($value)
+ */
+	class Biaya extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Siswa
+ *
+ * @property int $id
+ * @property int|null $siswa_id
+ * @property string|null $siswa_status
+ * @property string $nama
+ * @property string $nisn
+ * @property string|null $foto
+ * @property string $jurusan
+ * @property string $kelas
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\SiswaFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereFoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereJurusan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereKelas($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereNama($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereNisn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereSiswaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereSiswaStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Siswa whereUserId($value)
+ */
+	class Siswa extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Tagihan
+ *
+ * @property int $id
+ * @property int $siswa_id
+ * @property int $user_id
+ * @property int $kelas
+ * @property string $tanggal_tagihan
+ * @property string $tanggal_jatuh_tempo
+ * @property string $nama_biaya
+ * @property float $jumlah_biaya
+ * @property string|null $keterangan
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Siswa|null $siswa
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\TagihanFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereJumlahBiaya($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereKelas($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereKeterangan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereNamaBiaya($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereSiswaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereTanggalJatuhTempo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereTanggalTagihan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tagihan whereUserId($value)
+ */
+	class Tagihan extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\User
  *
  * @property int $id

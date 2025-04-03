@@ -13,7 +13,7 @@ class UpdateSiswaRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class UpdateSiswaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'siswa_id' => 'nullable',
+            'nama' => 'required',
+            'nisn' => 'required|unique:siswas,nisn,'. $this->siswa, 
+            'jurusan' => 'required',
+            'kelas' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
         ];
     }
 }

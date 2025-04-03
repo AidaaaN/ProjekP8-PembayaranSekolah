@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSiswaRequest extends FormRequest
+class UpdateBiayaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,21 @@ class StoreSiswaRequest extends FormRequest
     public function rules()
     {
         return [
-            'siswa_id' => 'nullable',
-            'nama' => 'required',
-            'nisn' => 'required|unique:siswas',
-            'jurusan' => 'required',
-            'kelas' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:5000',
+            'nama' => 'required|unique:biayas,nama,' . $this->biaya,
+            'jumlah' => 'required|numeric',
         ];
     }
+
+    /**
+     * Prepare the data for validation.
+     * 
+     * @return void
+     */
+    protected function prepareForValidation()   
+    {
+        $this->merge([
+            'jumlah' => str_replace('.', '', $this->jumlah),
+        ]);
+    }
+
 }

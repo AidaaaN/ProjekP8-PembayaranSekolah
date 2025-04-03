@@ -11,8 +11,8 @@
                         <div class="col-md-6">
                             {!! Form::open(['route' => $routePrefix . '.index', 'method' => 'GET']) !!}
                             <div class="input-group">
-                                <input name="q" type="text" class="form-control mt-2" placeholder="Cari Nama Siswa"
-                                aria-label="cari nama" aria-describedby="button-addon2" value="{{ request('q') }}">
+                                <input name="q" type="text" class="form-control mt-2" placeholder="Cari Data"
+                                aria-label="cari data" aria-describedby="button-addon2" value="{{ request('q') }}">
                                 <button type="submit" class="btn btn-outline-primary mt-2" id="button-addon2">
                                     <i class="bx bx-search"></i>
                                 </button>
@@ -25,10 +25,8 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
-                                    <th>NISN</th>
-                                    <th>Kelas</th>
-                                    <th>Jurusan</th>
+                                    <th>Nama Tagihan</th>
+                                    <th>Jumlah</th>
                                     <th>Created By</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -38,9 +36,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->nisn }}</td>
-                                        <td>{{ $item->kelas }}</td>
-                                        <td>{{ $item->jurusan }}</td>
+                                        <td>{{ $item->formatRupiah('jumlah') }}</td>
                                         <td>{{ $item->user->name }}</td>
                                         <td>
                                             {!! Form::open([

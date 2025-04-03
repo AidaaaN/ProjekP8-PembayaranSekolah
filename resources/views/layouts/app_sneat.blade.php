@@ -157,6 +157,18 @@
                 <div data-i18n="Basic">Data Siswa</div>
               </a>
             </li>
+            <li class="menu-item {{ \Route::is('biaya.*') ? 'active' : '' }}">
+              <a href="{{ route('biaya.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Data Biaya</div>
+              </a>
+            </li>
+            <li class="menu-item {{ \Route::is('tagihan.*') ? 'active' : '' }}">
+              <a href="{{ route('tagihan.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Data Tagihan</div>
+              </a>
+            </li>
 
             <li class="menu-item">
               <a href="{{ route('logout') }}" class="menu-link">
@@ -296,5 +308,11 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
+    <script>
+      $(document).ready(function() {
+        $('.rupiah').mask('#.##0', {reverse: true});
+      });
+    </script>
   </body>
 </html>
