@@ -5,6 +5,8 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\BerandaSiswaController;
 use App\Http\Controllers\BerandaTUController;
 use App\Http\Controllers\BiayaController;
+use App\Http\Controllers\KwitansiPembayaranController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +38,9 @@ Route::prefix('tu')->middleware(['auth', 'auth.tu'])->group(function () {
     Route::resource('siswa', SiswaController::class);
     Route::resource('biaya', BiayaController::class);
     Route::resource('tagihan', TagihanController::class);
+    Route::resource('pembayaran', PembayaranController::class);
+    Route::get('kwitansi->pembayaran/{id}', [KwitansiPembayaranController::class, 'show'])->name('kwitansipembayaran.show');
+
 });
 
 Route::prefix('siswa')->middleware(['auth', 'auth.siswa'])->group(function () {
