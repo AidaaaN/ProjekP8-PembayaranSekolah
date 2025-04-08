@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Biaya;
+use App\Models\Siswa;
+use App\Models\Tagihan;
+use Illuminate\Http\Request;
 use App\Models\Tagihan as Model;
 use App\Http\Requests\StoreTagihanRequest;
 use App\Http\Requests\UpdateTagihanRequest;
-use App\Models\Biaya;
+use App\Models\Pembayaran;
 use App\Models\Siswa as ModelsSiswa;
+<<<<<<< HEAD
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+=======
+use App\Models\TagihanDetail;
+use Psy\Command\WhereamiCommand;
+>>>>>>> f42df6996d1fa54092ca4c41e752eb55699c7fd3
 
 class TagihanController extends Controller
 {
@@ -24,12 +34,15 @@ class TagihanController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->filled('q')) {
-            $models = Model::with('user','siswa')->search($request->q)->paginate(50);
+        if ($request->filled('bulan') && $request->filled('tahun')) {
+            $models = Model::latest()
+            ->whereMonth('tanggal_tagihan', $request->bulan)
+            ->whereYear('tanggal_tagihan', $request->tahun)
+            ->paginate(50);
         }else{
-            $models = Model::with('user','siswa')->latest()->paginate(50);
+            $models = Model::latest()->paginate(50);
         }
- 
+      
         return view('tu.'.$this->viewIndex, [
             'models' => $models,
             'routePrefix' => $this->routePrefix,
@@ -65,13 +78,7 @@ class TagihanController extends Controller
      */
     public function store(StoreTagihanRequest $request)
     {
-        //1. lakukan validasi
-        //2. ambil data biaya yang ditagih
-        //3. ambil data siswa yang ditagih berdasar kelas
-        //4. lakukan perulangan untuk setiap siswa
-        //5. didalam perulangan, simpan tagihan berdasarkan biaya & siswa
-        //6. simpan notifikasi database untuk tagihan
-        //7. redirect back() dengan pesan sukses
+    
         $requestData = $request->validated();
         $biayaIdArray = $requestData['biaya_id'];
 
@@ -83,14 +90,24 @@ class TagihanController extends Controller
         foreach ($siswa as $item) {
             $itemSiswa = $item;
             $biaya = Biaya::whereIn('id', $biayaIdArray)->get();
+            unset ($requestData['biaya_id']);
+            $requestData['siswa_id'] = $itemSiswa->id;
+            $requestData['status'] = 'baru';
+        $tanggalTagihan = Carbon::parse($requestData['tanggal_tagihan']);
+        $bulanTagihan = $tanggalTagihan->format('m');
+        $tahunTagihan = $tanggalTagihan->format('Y');
+        $cekTagihan = Model::where('siswa_id', $itemSiswa->id)
+            ->whereMonth('tanggal_tagihan', $bulanTagihan)
+            ->whereYear('tanggal_tagihan', $tahunTagihan)
+            ->first();
+        if($cekTagihan == null) {
+            $tagihan = Model::create($requestData);
             foreach ($biaya as $itemBiaya) {
-                $dataTagihan = [
-                    'siswa_id' => $itemSiswa->id,
-                    'kelas' => $requestData['kelas'],
-                    'tanggal_tagihan' => $requestData['tanggal_tagihan'],
-                    'tanggal_jatuh_tempo' => $requestData['tanggal_jatuh_tempo'],
+                $detail = TagihanDetail::create([
+                    'tagihan_id' => $tagihan->id,
                     'nama_biaya' => $itemBiaya->nama,
                     'jumlah_biaya' => $itemBiaya->jumlah,
+<<<<<<< HEAD
                     'keterangan' => $requestData['keterangan'],
                     'status' => 'baru',
                 ];
@@ -106,9 +123,16 @@ class TagihanController extends Controller
                 if ($cekTagihan == null){
                     Model::create($dataTagihan);
                 }
+=======
+
+                ]);
+
+>>>>>>> f42df6996d1fa54092ca4c41e752eb55699c7fd3
             }
         }
-        flash('Tagihan berhasil disimpan')->success();
+
+    }
+        flash(' Data Tagihan berhasil disimpan')->success();
         return back();
     }
 
@@ -118,33 +142,17 @@ class TagihanController extends Controller
      * @param  \App\Models\Tagihan  $tagihan
      * @return \Illuminate\Http\Response
      */
-    public function show(Model $tagihan)
-    {
-        //
-    }
+    public function show(Request $request, $id)
+{
+    $tagihan = Model::with('pembayaran')->findOrFail($id);
+        $data['tagihan'] = $tagihan;
+        $data['siswa'] = $tagihan->siswa;
+        $data['periode'] = Carbon::parse($tagihan->tanggal_tagihan)->translatedFormat('F Y');
+        $data['model'] = new Pembayaran();
+    return view('tu.' . $this->viewShow, $data);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Model $tagihan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateTagihanRequest  $request
-     * @param  \App\Models\Tagihan  $tagihan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateTagihanRequest $request, Model $tagihan)
-    {
-        //
-    }
+}
+   
 
     /**
      * Remove the specified resource from storage.
