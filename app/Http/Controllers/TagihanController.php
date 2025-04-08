@@ -7,7 +7,6 @@ use App\Http\Requests\StoreTagihanRequest;
 use App\Http\Requests\UpdateTagihanRequest;
 use App\Models\Biaya;
 use App\Models\Siswa as ModelsSiswa;
-use App\Models\Tagihan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -75,6 +74,7 @@ class TagihanController extends Controller
         //7. redirect back() dengan pesan sukses
         $requestData = $request->validated();
         $biayaIdArray = $requestData['biaya_id'];
+
         $siswa = ModelsSiswa::query();
         if ($requestData['kelas'] != '') {
             $siswa->where('kelas', $requestData['kelas']);
@@ -99,11 +99,11 @@ class TagihanController extends Controller
                 $bulanTagihan = $tanggalTagihan->format('m');
                 $tahunTagihan = $tanggalTagihan->format('Y');
                 $cekTagihan = Model::where('siswa_id', $itemSiswa->id)
-                    ->where('biaya_id', $itemBiaya->nama)
+                    ->where('nama_biaya', $itemBiaya->nama)
                     ->whereMonth('tanggal_tagihan', $bulanTagihan)
                     ->whereYear('tanggal_tagihan', $tahunTagihan)
                     ->first();
-                if($cekTagihan == null) {
+                if ($cekTagihan == null){
                     Model::create($dataTagihan);
                 }
             }

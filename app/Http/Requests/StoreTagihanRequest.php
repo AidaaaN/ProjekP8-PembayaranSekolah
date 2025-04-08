@@ -24,7 +24,7 @@ class StoreTagihanRequest extends FormRequest
     public function rules()
     {
         return [
-            'biaya_id.*' => 'required|exists:biayas,id',
+            'biaya_id.*' => 'required',
             'kelas' => 'nullable|numeric',
             'tanggal_tagihan' => 'required|date',
             'tanggal_jatuh_tempo' => 'required|date',

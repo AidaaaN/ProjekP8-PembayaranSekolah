@@ -12,7 +12,7 @@
                     {{-- <div class="form-group">
                         <label for="biaya_id">Biaya Yang Ditagih</label>
                         {{ Form::select('biaya_id', $biaya, null, ['class' => 'form-control', 'multiple' => true]) }}
-                        <span class="text-danger">{{ $errors->first('biaya_id') }}</span>
+                        <span class="text-danger">{{ $errors->first(' biaya_id') }}</span>
                     </div> --}}
                     <label>Jenis Biaya</label>
                     @foreach ($biaya as $item)
@@ -22,7 +22,9 @@
                                 'id' => 'defaultCheck' . $loop->iteration,
                             ]) !!}
 
-                            <label class="form-check-label" for="defaultCheck{{ $loop->iteration }}">{{ $item->nama_biaya_full }}</label>
+                            <label class="form-check-label" for="defaultCheck{{ $loop->iteration }}">
+                                {{ $item->nama_biaya_full }}
+                              </label>
                         </div>
                     @endforeach
                     <div class="form-group mt-3">
